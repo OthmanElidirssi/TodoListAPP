@@ -1,0 +1,86 @@
+﻿
+@{
+
+    Layout = "_Users";
+
+}
+
+@model Dictionary<string, (int Completed, int NonCompleted)>
+@{
+    int totalTasks = Model.Sum(x => x.Value.Completed + x.Value.NonCompleted);
+    int totalCompleted = Model.Sum(x => x.Value.Completed);
+    int totalNonCompleted = Model.Sum(x => x.Value.NonCompleted);
+    int overallCompletionPercentage = totalTasks != 0 ? (int)((double)totalCompleted / totalTasks * 100) : 0;
+}
+
+<div class="container mt-5 mb-3">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card shadow border-primary" style="height: 100%;">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h3 class="mb-0">Hello There , @ViewData["UserName"]</h3>
+                    <i class="fas fa-user-circle fa-2x ml-auto"></i>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <p class="text-muted mb-0">Total Tasks:</p>
+                        <span class="badge bg-info rounded-pill">@totalTasks</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <p class="text-muted mb-0">Completed:</p>
+                        <span class="badge bg-success rounded-pill">@totalCompleted</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <p class="text-muted mb-0">Remaining:</p>
+                        <span class="badge bg-danger rounded-pill">@totalNonCompleted</span>
+                    </div>
+
+                    <div class="text-center mt-3">
+                        <span class="badge bg-light text-primary font-weight-bold p-2">
+                            @if (overallCompletionPercentage >= 80)
+                            {
+                                <text>Nearly There , Don't Give Up @totalCompleted of @totalTasks</text>
+                            }
+                            else
+                            {
+                                <text>Keep Going , Don't Give Up @totalCompleted of @totalTasks</text>
+                            }
+                        </span>
+                    </div>
+
+                    <div class="progress mb-2">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: @overallCompletionPercentage%" aria-valuenow="@overallCompletionPercentage" aria-valuemin="0" aria-valuemax="100">@overallCompletionPercentage%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            @foreach (var item in Model)
+            {
+                    <div class="card shadow mb-3" style="height: 150px;"> 
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h3 class="mb-0">@item.Key</h3>
+                            <div class="text-muted">
+                                <span class="badge bg-info rounded-pill">Total: @(item.Value.Completed + item.Value.NonCompleted)</span>
+                                <span class="badge bg-success rounded-pill">@item.Value.Completed Completed</span>
+                                <span class="badge bg-danger rounded-pill">@item.Value.NonCompleted left</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="progress">
+                            @{
+                                int total = item.Value.Completed + item.Value.NonCompleted;
+                                int completionPercentage = total != 0 ? (int)((double)item.Value.Completed / total * 100) : 0;
+                            }
+                                <div class="progress-bar bg-success" role="progressbar" style="width: @completionPercentage%" aria-valuenow="@completionPercentage" aria-valuemin="0" aria-valuemax="100">@completionPercentage%</div>
+                            </div>
+                        </div>
+                    </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+

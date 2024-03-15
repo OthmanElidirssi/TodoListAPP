@@ -1,0 +1,27 @@
+﻿@{
+    Layout = "_Users";
+}
+
+@model Todo
+
+<h1 class="text-center display-4 mb-4">Add Task</h1>
+
+<form asp-action="AddTask" method="post" class="form-group d-flex flex-column justify-content-center align-items-center">
+    <div class="w-50 mb-3">
+        <label for="Task" class="form-label">Task</label>
+        <input type="text" class="form-control" id="Task" name="Task" asp-for="Task" required>
+        <span class="text-danger" asp-validation-for="Task"></span>
+    </div>
+    <div class="w-50 mb-3">
+        <label for="Category" class="form-label">Category</label>
+        <select class="form-control" id="Category" name="CategoryId" asp-for="CategoryId" required>
+            <option value="">-- Select Category --</option>
+            @foreach (var category in ViewData["Categories"] as List<Category>)
+            {
+                    <option value="@category.CategoryId">@category.CategoryName</option>
+            }
+        </select>
+        <span class="text-danger" asp-validation-for="CategoryId"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Task</button>
+</form>

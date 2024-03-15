@@ -1,0 +1,58 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+
+    Layout = "_Admin";
+}
+
+@model List<User>
+<h2 class="mt-5">Users</h2>
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>User ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+                <tr>
+                    <td>@user.UserId</td>
+                    <td>@user.UserName</td>
+                    <td>@user.Email</td>
+                    <td>
+                    @if (user.IsActive ?? false)
+                    {
+                                <button type="button" class="btn btn-success btn-sm rounded-pill">Active</button>
+                    }
+                    else
+                    {
+                                <button type="button" class="btn btn-warning btn-sm rounded-pill">Awaiting</button>
+                    }
+                    </td>
+                    <td>
+                        <form asp-action="ToggleUserStatus" method="post">
+                            <input type="hidden" name="userId" value="@user.UserId" />
+                        @if (user.IsActive ?? false)
+                        {
+                                    <button type="submit" class="btn btn-sm btn-danger rounded-pill">Disable</button>
+                        }
+                        else
+                        {
+                                    <button type="submit" class="btn btn-sm btn-success rounded-pill">Enable</button>
+                        }
+                        </form>
+                    </td>
+                </tr>
+        }
+    </tbody>
+</table>
+
+
+
+

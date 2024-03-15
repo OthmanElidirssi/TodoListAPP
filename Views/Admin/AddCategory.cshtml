@@ -1,0 +1,54 @@
+﻿
+@{
+    Layout = "_Admin";
+}
+
+@model Category;
+
+<form method="post" asp-controller="Admin" asp-action="AddCategory">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card mt-5">
+                    <div class="card-body">
+                        <h2 class="card-title text-center mb-4">Add Category</h2>
+                        @if (TempData.ContainsKey("successMessages"))
+                        {
+                            if (TempData["successMessages"] is String[] success && success != null)
+                            {
+                                foreach (var message in success)
+                                {
+                                                <div class="alert alert-success">
+                                                    <p>@message</p>
+                                                </div>
+                                }
+                            }
+                        }
+                        @if (TempData.ContainsKey("errorMessages"))
+                        {
+                            if (TempData["errorMessages"] is String[] errors && errors != null)
+                            {
+                                foreach (var message in errors)
+                                {
+                                                <div class="alert alert-danger">
+                                                    <p>@message</p>
+                                                </div>
+                                }
+                            }
+                        }
+
+                        <div class="mb-3">
+                            <label for="categoryName" class="form-label">Category Name</label>
+                            <input type="text" class="form-control form-control-lg" asp-for="CategoryName" placeholder="Please Enter a Category Name" />
+                            <div class="invalid-feedback">Please provide a category name.</div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-lg d-block mx-auto">Add Category</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+
